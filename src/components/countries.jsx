@@ -2,8 +2,7 @@ import Country from "./country";
 import { useGlobalContext } from "../context";
 
 const Countries =  ()=> {
- const {countries }= useGlobalContext()
-
+const {filter_countries:countries} = useGlobalContext()
  
  return(
   <section>

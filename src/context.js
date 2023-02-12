@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useReducer } from 'react'
+import reducer from './reducer'
 
 const AppContext = React.createContext()
 
@@ -10,11 +11,17 @@ const getStorageTheme = () => {
   return theme
 }
 
-export const AppProviver = ({ children }) => {
-  const [theme, setTheme] = useState(getStorageTheme)
-  const [countries, setCountries] = useState([])
-  const [isLoading, setIsloading] = useState(false)
+const initialState = {
+ countries: [],
+ filter_countries: [],
+ isLoading: false,
+}
 
+export const AppProviver = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const [theme, setTheme] = useState(getStorageTheme)
+ 
+ //console.log(state)
   const toggleTheme = () => {
     console.log('clicked')
     if (theme === 'light-theme') {
@@ -25,17 +32,21 @@ export const AppProviver = ({ children }) => {
   }
 
   const fetchData = async () => {
-    setIsloading(true)
+    dispatch({type: 'START_FETCHING'})
     try {
       const response = await fetch('https://restcountries.com/v3.1/all')
-      const data = await response.json()
-      setIsloading(false)
-      setCountries(data)
-      console.log(data)
+      const data = await response.json() 
+      // console.log(data)
+      dispatch({type: 'GET_DATA', payload:data}) 
+      dispatch({ type: 'DONE_FETCHING' })
     } catch (err) {
-     setIsloading(false)
+     dispatch({type: 'DONE_FETCHING'})
       console.log(err)
     }
+  }
+
+  const handleChange = (e)=> {
+    dispatch({type: 'SEARCH_COUNTRY', payload:e.target.value})
   }
 
   useEffect(() => {
@@ -48,7 +59,7 @@ export const AppProviver = ({ children }) => {
   }, [])
 
   return (
-    <AppContext.Provider value={{ toggleTheme, theme, countries, isLoading }}>
+    <AppContext.Provider value={{...state, toggleTheme, theme, handleChange}}>
       {children}
     </AppContext.Provider>
   )

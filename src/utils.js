@@ -5,5 +5,5 @@ export function formatNumber(numb) {
 export const getUniqueValues = (data) => {
   let unique = data.map((item) => item.region)
   
-  return ['all', ...new Set(unique)]
+  return ['All', ...new Set(unique)]
 }
