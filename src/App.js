@@ -1,17 +1,29 @@
-import Header from './components/Header';
-import Search from './components/Search';
-import './App.css';
-import Countries from './components/countries';
-
+import {Route, Routes, BrowserRouter as Router} from 'react-router-dom'
+import './App.css'
+import Countries from './components/countries'
+import Search from './components/Search'
+import Header from './components/Header'
+import SingleCountry from './components/SingleCountry'
 
 function App() {
   return (
-    <div className="App">
+    <Router>
       <Header />
-      <Search />
-      <Countries />
-    </div>
-  );
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/:name' element={<SingleCountry />} />
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
+const Home = () => {
+  return (
+    <>   
+      <Search />
+      <Countries />
+    </>
+  )
+}
+
+export default App

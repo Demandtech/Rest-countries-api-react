@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useReducer } from 'react'
 import reducer from './reducer'
+import dataJson from './data.json'
 
 const AppContext = React.createContext()
 
@@ -12,8 +13,8 @@ const getStorageTheme = () => {
 }
 
 const initialState = {
- countries: [],
- filter_countries: [],
+ countries:dataJson,
+ filter_countries: dataJson,
  isLoading: false,
 }
 
@@ -23,7 +24,7 @@ export const AppProviver = ({ children }) => {
  
  //console.log(state)
   const toggleTheme = () => {
-    console.log('clicked')
+    console.log(dataJson)
     if (theme === 'light-theme') {
       setTheme('dark-theme')
     } else {
@@ -34,7 +35,7 @@ export const AppProviver = ({ children }) => {
   const fetchData = async () => {
     dispatch({type: 'START_FETCHING'})
     try {
-      const response = await fetch('https://restcountries.com/v3.1/all')
+      const response = await fetch('https://restcountries.com/v2.1/all')
       const data = await response.json() 
       // console.log(data)
       dispatch({type: 'GET_DATA', payload:data}) 
@@ -59,7 +60,7 @@ export const AppProviver = ({ children }) => {
   }, [])
 
   return (
-    <AppContext.Provider value={{...state, toggleTheme, theme, handleChange}}>
+    <AppContext.Provider value={{...state, toggleTheme, theme, handleChange, dispatch}}>
       {children}
     </AppContext.Provider>
   )

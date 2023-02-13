@@ -9,14 +9,24 @@ const reducer = (state, action) => {
     case 'SEARCH_COUNTRY':
       const { countries } = state
       let tempCountries = countries.filter((country) => {
-        return country.name.common.toLowerCase().startsWith(action.payload.toLowerCase())
+        return country.name
+          .toLowerCase()
+          .startsWith(action.payload.toLowerCase())
+      })
+      return { ...state, filter_countries: tempCountries }
+    case 'SEARCH_REGION':
+      let regionCountries = state.countries.filter((country) => {
+        if (action.payload === 'All') {
+          return country
+        } else {
+          return country.region === action.payload
+        }
       })
 
-      return { ...state, filter_countries: tempCountries }
-    default:
-      return { ...state }
-  }
-  throw new Error(`No Matching "${action.type}" action type`)
+      return { ...state, filter_countries: regionCountries }
+    default: 
+      return {...state}
+  } 
 }
 
 export default reducer

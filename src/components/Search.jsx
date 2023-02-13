@@ -5,13 +5,14 @@ import { useGlobalContext } from '../context'
 import { getUniqueValues } from '../utils'
 
 const Search = () => {
-  const { countries, handleChange } = useGlobalContext()
+  const { countries, handleChange, dispatch } = useGlobalContext()
   const regions = getUniqueValues(countries)
   const [OpenSelect, setOpenSelect] = useState(false)
   const [region, setRegion] = useState('Filter by Region')
 
-  const handleSelect = (str)=> {
-    setRegion(str)
+  const handleSelect = (e)=> {
+    dispatch({ type: 'SEARCH_REGION', payload: e.target.innerText })
+    setRegion(e.target.innerText)
     setOpenSelect(false)
   }
   
@@ -31,7 +32,7 @@ const Search = () => {
         {OpenSelect && (
           <Wrapper className='options'>
             {regions.map((region, index) => {
-              return <button onClick={()=>handleSelect(region)} key={index}>{region}</button>
+              return <button onClick={(e)=>handleSelect(e)} key={index}>{region}</button>
             })}
           </Wrapper>
         )}
@@ -54,6 +55,7 @@ const Wrapper = styled.div`
     all:unset;
     padding: 5px 0;
     display:block;
+    width:100%;
   }
 `
 
