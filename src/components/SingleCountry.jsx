@@ -108,7 +108,8 @@ const Wrapper = styled.main`
     margin-bottom: 40px;
     padding: 7px 15px;
     border-radius: 4px;
-    box-shadow: 2px 2px var(--bg);
+    box-shadow: var(--boxShadow);
+    cursor:pointer;
   }
 
   .wrapper {

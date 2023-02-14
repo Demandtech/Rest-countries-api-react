@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Country = ({ name, flags, population, capital, region }) => {
   return (
-    <Wrapper className='country'>
+    <Wrapper>
       <Link to={`/${name}`}>
         <img src={flags.png} alt={flags.alt} />
         <div className='content'>
@@ -26,8 +26,11 @@ const Country = ({ name, flags, population, capital, region }) => {
 
 const Wrapper = styled.article`
   border-radius: 0 0 8px 8px;
-  a{
-    all:unset;
+  background: var(--secondary);
+  color: var(--primary);
+  
+  a {
+    all: unset;
   }
   img {
     border-radius: 8px 8px 0 0;

@@ -2,12 +2,14 @@
   --bg: hsl(0, 0%, 98%);
   --primary: hsl(200, 15%, 8%);
   --secondary: hsl(0, 0%, 100%);
+  --boxShadow: rgba(0, 0, 0, 0.03) 0px 0px 3px 3px;
 }
 
 .dark-theme {
   --bg: hsl(207, 26%, 17%);
   --primary: hsl(0, 0%, 100%);
   --secondary: hsl(209, 23%, 22%);
+  --boxShadow: rgba(9, 9, 9, 0.27) 0px 7px 6px -4px;
 }
 
 body {
@@ -23,151 +25,18 @@ body {
   box-sizing: border-box;
 }
 
-.header-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--secondary);
-  color: var(--primary);
-  padding: 10px 70px;
-  box-shadow: 1px 1px 5px var(--bgbg);
-}
 
-.toggle-wrapper {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
 
-.toggle-wrapper button {
-  all: unset;
-  display: flex;
-  transform: rotate(-20deg);
-  transition: 0.5s;
-}
 
-.toggle-wrapper span {
-  display: block;
-}
 
-.search {
-  display: flex;
-  justify-content: space-between;
-  padding: 40px 70px;
-}
 
-.search-input {
-  width: 400px;
-  position: relative;
-  height: 40px;
-}
 
-.search-input input {
-  width: 100%;
-  height: 100%;
-  padding-left: 45px;
-  border: none;
-  border-radius: 4px;
-  background: var(--secondary);
-  color: var(--primary);
-  font-size: 16px;
-}
-
-input::placeholder {
-  color: var(--primary);
-}
-
-.search-btn {
-  all: unset;
-  display: flex;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 20px;
-}
-
-.search-icon {
-  fill: var(--primary);
-}
-
-.selected {
-  border: none;
-  height: 40px;
-  width: 100%;
-  padding: 0 25px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--secondary);
-  color: var(--primary);
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.select {
-  position: relative;
-  width: 200px;
-}
-.countries-container {
-  display: grid;
-  padding: 0 70px;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-}
-
-.country {
-  background: var(--secondary);
-  color: var(--primary);
-}
-
-@media screen and (max-width: 835px) {
-  .search-input {
-    width: 200px;
-  }
-  .countries-container {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0 35px;
-  }
-
-  .header-wrapper {
-    padding: 10px 35px;
-  }
-
-  .search {
-    padding: 40px 35px;
-  }
-}
 
 @media screen and (max-width: 480px) {
-  h1 {
-    font-size: 18px;
-  }
+ 
   .countries-container {
-    grid-template-columns: 1fr;
-    padding: 0 40px;
+    
   }
 
-  .header-wrapper {
-    padding: 20px;
-  }
-
-  .search {
-    padding: 40px 20px;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .search-input {
-    width: 100%;
-  }
-
-  .toggle-wrapper {
-    gap: 5px;
-  }
-
-  .toggle-wrapper span {
-    font-size: 14px;
-  }
+  
 }
