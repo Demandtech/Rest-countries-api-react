@@ -1,28 +1,36 @@
-import Country from "./country";
-import { useGlobalContext } from "../context";
-import styled from "styled-components";
+import Country from './country'
+import styled from 'styled-components'
+import Search from './Search'
+import { useGlobalContext } from '../context'
 
-const Countries =  ()=> {
-const {filter_countries:countries, isLoading} = useGlobalContext()
- 
-if(isLoading){
-  return <Wrapper>
-    Loading...
-  </Wrapper>
-}
- return(
-  <section>
-    <div className="countries-container">
-       {countries.map((country, index)=> {
-        return <Country key={index} {...country}/>
-       })}
-    </div>
-  </section>
- )
+
+
+const Countries = () => {
+  const {countries, isLoading} =useGlobalContext()
+  //console.log(countries)
+  if (isLoading) {
+    return <Wrapper>Loading...</Wrapper>
+  }
+  return (
+    <>
+      <section>
+      <Search />
+      </section>
+      <section>
+        <div className='countries-container'>
+          {countries.map((country, index) => {
+            return <Country key={index} {...country} />
+          })}
+        </div>
+      </section>
+    </>
+  )
 }
 
 const Wrapper = styled.div`
- 
+ text-align:center;
+ font-size: 18px;
+ color:#ffffff;
 `
 
 export default Countries

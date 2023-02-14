@@ -8,7 +8,7 @@ const Country = ({ name, flags, population, capital, region }) => {
       <Link to={`/${name}`}>
         <img src={flags.png} alt={flags.alt} />
         <div className='content'>
-          <h6>{name.common}</h6>
+          <h6>{name}</h6>
           <p>
             Population: <span>{formatNumber(population)}</span>
           </p>

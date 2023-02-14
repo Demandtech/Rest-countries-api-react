@@ -1,20 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FaSearch, FaChevronDown } from 'react-icons/fa'
 import styled from 'styled-components'
 import { useGlobalContext } from '../context'
-import { getUniqueValues } from '../utils'
 
 const Search = () => {
-  const { countries, handleChange, dispatch } = useGlobalContext()
-  const regions = getUniqueValues(countries)
-  const [OpenSelect, setOpenSelect] = useState(false)
-  const [region, setRegion] = useState('Filter by Region')
-
-  const handleSelect = (e)=> {
-    dispatch({ type: 'SEARCH_REGION', payload: e.target.innerText })
-    setRegion(e.target.innerText)
-    setOpenSelect(false)
-  }
+  const {handleChange, setOpenSelect, openSelect, regions,region, handleSelect } = useGlobalContext()
   
   return (
     <div className='search'>
@@ -25,11 +15,11 @@ const Search = () => {
         </button>
       </div>
       <div className='select'>
-        <button className='selected' onClick={() => setOpenSelect(!OpenSelect)}>
+        <button className='selected' onClick={() => setOpenSelect(!openSelect)}>
           <span style={{fontSize:'16px'}}>{region}</span>
           <FaChevronDown />
         </button>
-        {OpenSelect && (
+        {openSelect && (
           <Wrapper className='options'>
             {regions.map((region, index) => {
               return <button onClick={(e)=>handleSelect(e)} key={index}>{region}</button>

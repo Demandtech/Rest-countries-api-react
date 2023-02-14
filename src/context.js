@@ -1,66 +1,105 @@
-import React, { useContext, useState, useEffect, useReducer } from 'react'
-import reducer from './reducer'
-import dataJson from './data.json'
+import React, { useContext, useState, useEffect} from 'react'
+//import { useSearchParams } from 'react-router-dom'
+import { getUniqueValues } from './utils'
 
 const AppContext = React.createContext()
 
-const getStorageTheme = () => {
-  let theme = 'light-theme'
-  if (localStorage.getItem('theme')) {
-    theme = localStorage.getItem('theme')
+const url = 'https://restcountries.com/v2/all'
+
+export const AppProvider = ({ children }) => {
+  const [countries, setCountries] = useState([])
+  const [filteredCountries, setFilteredCountry] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [country, setCountry] = useState({})
+  const [isSingleLoading, setIsSingleLoading] = useState(false)
+  const [borders, setBorders] = useState([])
+  const [openSelect, setOpenSelect] = useState(false)
+  const [region, setRegion] = useState('Filter by Region')
+  const [regions, setRegions] = useState([])
+
+  const handleSelect = (e) => {
+    setRegion(e.target.textContent)
+    setOpenSelect(false)
+
+    const filtered = filteredCountries.filter(
+      (cur) => cur.region === e.target.textContent
+    )
+    setCountries(filtered)
   }
-  return theme
-}
 
-const initialState = {
- countries:dataJson,
- filter_countries: dataJson,
- isLoading: false,
-}
+  const handleChange = (e) => {
+    const searchTerm = e.target.value
+    const filtered = filteredCountries.filter((cur) => {
+      console.log(cur.name)
+      console.log(e.target.value)
+      return cur.name.toLowerCase().startsWith(searchTerm)
+    })
+    setCountries(filtered)
+  }
 
-export const AppProviver = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const [theme, setTheme] = useState(getStorageTheme)
- 
- //console.log(state)
-  const toggleTheme = () => {
-    console.log(dataJson)
-    if (theme === 'light-theme') {
-      setTheme('dark-theme')
-    } else {
-      setTheme('light-theme')
+  const fetchAllData = async (url) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(url)
+      const data = await response.json()
+      setCountries(data)
+      setIsLoading(false)
+      setRegions(getUniqueValues(data))
+      setFilteredCountry(data)
+    } catch (err) {
+      console.log(err)
+      setIsLoading(false)
     }
   }
 
-  const fetchData = async () => {
-    dispatch({type: 'START_FETCHING'})
+  const fetchSingleData = async (name) => {
+    setIsSingleLoading(true)
     try {
-      const response = await fetch('https://restcountries.com/v2.1/all')
-      const data = await response.json() 
-      // console.log(data)
-      dispatch({type: 'GET_DATA', payload:data}) 
-      dispatch({ type: 'DONE_FETCHING' })
+      const request = await fetch(`https://restcountries.com/v2/name/${name}`)
+      const data = await request.json()
+      setCountry(data[0])
+      data[0]?.borders?.forEach(border=>{
+       return getCountryBorder(border)
+      })
+      setIsSingleLoading(false)
     } catch (err) {
-     dispatch({type: 'DONE_FETCHING'})
+      setIsSingleLoading(false)
       console.log(err)
     }
   }
 
-  const handleChange = (e)=> {
-    dispatch({type: 'SEARCH_COUNTRY', payload:e.target.value})
+  const getCountryBorder = async (border) => {
+    try {
+      const url = `https://restcountries.com/v2/alpha/${border}`
+      const response = await fetch(url)
+      const data = await response.json()
+      setBorders((curVal) => [...curVal, data.name])
+      console.log(borders)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
-    document.documentElement.classList = theme
-    localStorage.setItem('theme', theme)
-  }, [theme])
-
-  useEffect(() => {
-    fetchData()
+    fetchAllData(url)
   }, [])
 
   return (
-    <AppContext.Provider value={{...state, toggleTheme, theme, handleChange, dispatch}}>
+    <AppContext.Provider
+      value={{
+        countries,
+        isLoading,
+        country,
+        isSingleLoading,
+        fetchSingleData,
+        handleSelect,
+        openSelect,
+        regions,
+        region,
+        handleChange,
+        setOpenSelect,
+      }}
+    >
       {children}
     </AppContext.Provider>
   )

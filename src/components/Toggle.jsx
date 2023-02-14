@@ -1,9 +1,29 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { FaMoon, FaSun } from 'react-icons/fa'
-import { useGlobalContext } from '../context'
+
+const getStorageTheme = ()=> {
+  let theme = 'light-theme';
+  if(localStorage.getItem('theme')){
+    theme = localStorage.getItem('theme')
+  }
+  return theme
+}
 
 const Toggle = () => {
- const {theme, toggleTheme} = useGlobalContext()
+ const [theme, setTheme] = useState(getStorageTheme)
+
+ useEffect(()=>{
+  document.documentElement.classList = theme
+  localStorage.getItem('theme', theme)
+ }, [theme])
+
+ const toggleTheme = ()=> {
+  if(theme === 'light-theme'){
+    setTheme('dark-theme')
+  }else if(theme === 'dark-theme'){
+    setTheme('light-theme')
+  }
+ }
   return (
     <div className='toggle-wrapper'>
       <div>
