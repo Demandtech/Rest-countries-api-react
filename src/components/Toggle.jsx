@@ -14,7 +14,7 @@ const Toggle = () => {
 
  useEffect(()=>{
   document.documentElement.classList = theme
-  localStorage.getItem('theme', theme)
+  localStorage.setItem('theme', theme)
  }, [theme])
 
  const toggleTheme = ()=> {
