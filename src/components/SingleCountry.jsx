@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -9,7 +9,9 @@ const SingleCountry = () => {
   const { name } = useParams()
   const { fetchSingleData, isSingleLoading, country, borders } =
     useGlobalContext()
+  const uniqueBorders =  [...new Set(borders)]
 
+  console.log(uniqueBorders)
   useEffect(() => {
     fetchSingleData(name)
     //eslint-disable-next-line
@@ -31,12 +33,10 @@ const SingleCountry = () => {
     region,
   } = country
 
-  console.log(population, currencies, languages, capital)
-
   return (
     <Wrapper>
       <Link to='/' className='btn'>
-       <FaArrowLeft /> Back
+        <FaArrowLeft /> Back
       </Link>
       <div className='wrapper'>
         <div className='flag'>
@@ -80,14 +80,23 @@ const SingleCountry = () => {
               </p>
             </div>
           </div>
-          <div className='borders-btns'>
-           <p>Border Countries: </p> {borders?.length? borders.map((country, index) => {
-              return (
-                <Link key={index} className='btn' to={`/${country}`}>
-                  {country}
-                </Link>
-              )
-            }): <p>No Borders...</p>}
+          <div className='borders'>
+            <div>
+              <p>Border Countries:</p>
+            </div>
+            <div className='borders-btns'>
+              {uniqueBorders?.length ? (
+                uniqueBorders.map((country, index) => {
+                  return (
+                    <Link key={index} className='btn' to={`/${country}`}>
+                      {country}
+                    </Link>
+                  )
+                })
+              ) : (
+                <p>No Borders...</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -109,20 +118,20 @@ const Wrapper = styled.main`
     padding: 7px 15px;
     border-radius: 4px;
     box-shadow: var(--boxShadow);
-    cursor:pointer;
+    cursor: pointer;
   }
 
   .wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    
 
     .flag {
       width: 47.5%;
       img {
         width: 100%;
-        height: 350px;
-        object-fit: cover;
+        max-height: 22rem;
+        object-fit: fill;
       }
     }
 
@@ -146,8 +155,27 @@ const Wrapper = styled.main`
 
       .detail-content {
         display: flex;
+        width: 100%;
         justify-content: space-between;
         margin: 30px 0;
+      }
+    }
+    .borders {
+      display: flex;
+
+      .borders-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+
+        .btn {
+          margin: 0;
+        }
+      }
+
+      p {
+        padding: 0;
+        width: 150px;
       }
     }
   }
@@ -161,19 +189,32 @@ const Wrapper = styled.main`
 
     .wrapper {
       flex-direction: column;
+      width: 100%;
 
       .flag {
         width: 100%;
         margin-bottom: 30px;
       }
 
-      .country-detail {
+      .country-details {
         width: 100%;
+        padding-bottom: 20px;
 
         .detail-content {
           flex-direction: column;
         }
       }
+     .borders{
+      flex-direction:column;
+      width: 100%;
+      gap: 10px;
+
+      .borders-btns{
+        width: 100%;
+        gap: 10px;
+
+      }
+     }
     }
   }
 `

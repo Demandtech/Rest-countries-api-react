@@ -58,7 +58,7 @@ export const AppProvider = ({ children }) => {
       const request = await fetch(`https://restcountries.com/v2/name/${name}`)
       const data = await request.json()
       setCountry(data[0])
-      data[0]?.borders?.forEach(border=>{
+      data[0]?.borders?.map(border=>{
        return getCountryBorder(border)
       })
       setIsSingleLoading(false)
@@ -73,7 +73,7 @@ export const AppProvider = ({ children }) => {
       const url = `https://restcountries.com/v2/alpha/${border}`
       const response = await fetch(url)
       const data = await response.json()
-      setBorders((curVal) => [...curVal, data.name])
+      setBorders((cur)=>[...cur,data.name])
       console.log(borders)
     } catch (err) {
       console.log(err)
@@ -82,7 +82,8 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     fetchAllData(url)
-  }, [])
+    //eslint-disable-next-line
+  }, [url])
 
   return (
     <AppContext.Provider
@@ -98,6 +99,7 @@ export const AppProvider = ({ children }) => {
         region,
         handleChange,
         setOpenSelect,
+        borders
       }}
     >
       {children}
