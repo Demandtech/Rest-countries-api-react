@@ -220,7 +220,7 @@ const Wrapper = styled.main`
 `
 
 const Loading = styled.main`
-  color: #ffffff;
+  color: var(--primary);
   text-align: center;
 `
 

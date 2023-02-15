@@ -43,7 +43,7 @@ const Wrapper = styled.section`
 const Loading = styled.div`
   text-align: center;
   font-size: 18px;
-  color: #ffffff;
+  color: var(--primary);
 `
 
 export default Countries
